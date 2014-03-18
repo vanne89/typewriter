@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+</head>
+<body>
+	<h1>Start met typen...</h1>
+	<span id="typewriter" tabindex="0" style="display: inline-block;">
+		 
+	</span>
+
+	<script type="text/javascript">
+	var lastkey = new Date();
+
+	var keyDownTime;
+	var keyUpTime;
+	var margin;
+
+	var which = -1;
+
+	$('body').keydown(function(e) {
+		if(e.keyCode == which) {
+			return;
+		}
+		which = e.keyCode;
+
+		console.log('key down!');
+		console.log(e.keyCode);
+		
+		var timeSinceLast = new Date() - lastkey.getTime();
+		console.log(timeSinceLast);
+
+		var max = 3000;
+		if(timeSinceLast > max) {
+			timeSinceLast = max;
+		}
+
+		keyDownTime = new Date();
+
+		var percentage = (timeSinceLast / max);
+		margin = (timeSinceLast / 40) - 5;
+		if(margin < -5) {
+			margin = -5;
+		}
+
+
+		// $('#typewriter').append('<span style="font-size: ' + (72 - (percentage * 60) + 12) + 'px;">' + String.fromCharCode(e.keyCode) + '</span>');
+
+		lastkey = new Date();
+	});
+
+	$('body').keyup(function(e) {
+		which = -1;
+		console.log("Key up: " + e.keyCode);
+
+		keyUpTime = new Date();
+
+		var beenDown = (keyUpTime.getTime() - keyDownTime.getTime());
+		console.log('been down for ' + beenDown + 'ms');
+
+		var percentage = (beenDown / 400);
+
+		console.log('margin: ' + margin);
+
+		$('#typewriter').append('<span style="font-size: ' + ((percentage * 60) + 12) + 'px; margin-left: '+ margin +'px;">' + String.fromCharCode(e.keyCode) + '</span>');
+	});
+	</script>
+</body>
+</html>
